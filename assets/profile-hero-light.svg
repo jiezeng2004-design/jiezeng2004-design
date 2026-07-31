@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="330" viewBox="0 0 1200 330" role="img" aria-labelledby="title desc">
+  <title id="title">Zengjie - building verifiable AI systems</title>
+  <desc id="desc">A Yistar-blue editorial system panel for local-first AI tools.</desc>
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#dedfd9" stroke-width="1" /></pattern>
+    <linearGradient id="blue" x1="0" x2="1"><stop stop-color="#245ddb" /><stop offset="1" stop-color="#5b82ec" /></linearGradient>
+    <filter id="glow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="5" result="b" /><feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
+  </defs>
+  <rect width="1200" height="330" fill="#f6f5f0" />
+  <rect width="1200" height="330" fill="url(#grid)" />
+  <rect x="16" y="16" width="1168" height="298" fill="#f6f5f0" fill-opacity=".78" stroke="#cfd1ca" />
+  <circle cx="42" cy="42" r="5" fill="#245ddb" /><text x="60" y="47" fill="#171717" font-family="ui-monospace,Consolas,monospace" font-size="12" font-weight="700" letter-spacing="2">YISTAR / PROFILE_SYSTEM</text>
+  <circle cx="1042" cy="42" r="5" fill="#245ddb" class="blink" filter="url(#glow)" /><text x="1057" y="47" fill="#5d625d" font-family="ui-monospace,Consolas,monospace" font-size="11" letter-spacing="1.4">ONLINE</text>
+  <path d="M42 76H354" stroke="url(#blue)" stroke-width="5" stroke-linecap="round" />
+  <text x="42" y="132" fill="#171717" font-family="Arial,sans-serif" font-size="44" font-weight="800" letter-spacing="-1.5">BUILD SYSTEMS</text>
+  <text x="42" y="182" fill="#171717" font-family="Arial,sans-serif" font-size="44" font-weight="800" letter-spacing="-1.5">THAT CAN BE</text>
+  <text x="42" y="232" fill="#245ddb" font-family="Arial,sans-serif" font-size="44" font-weight="800" letter-spacing="-1.5">VERIFIED.</text>
+  <text x="44" y="273" fill="#60645e" font-family="ui-monospace,Consolas,monospace" font-size="13" letter-spacing="1.4">AI AGENTS  /  LOCAL-FIRST  /  AUDITABLE DELIVERY</text>
+  <g transform="translate(865 172)">
+    <circle r="98" fill="none" stroke="#cfd1ca" /><circle r="70" fill="none" stroke="#8da8f4" stroke-dasharray="8 11" class="rotate" />
+    <path d="M-155 0H-72M72 0H155M0-118V-72M0 72V118" stroke="#245ddb" stroke-width="1.5" stroke-dasharray="6 8" class="flow" />
+    <circle r="43" fill="#e8edfc" stroke="#245ddb" stroke-width="2" /><circle r="17" fill="#245ddb" filter="url(#glow)" />
+    <g fill="#f6f5f0" stroke="#245ddb" stroke-width="2"><circle cx="0" cy="-98" r="8" class="node" /><circle cx="98" cy="0" r="8" class="node n2" /><circle cx="0" cy="98" r="8" class="node n3" /><circle cx="-98" cy="0" r="8" class="node n4" /></g>
+    <text x="-56" y="143" fill="#245ddb" font-family="ui-monospace,Consolas,monospace" font-size="11" letter-spacing="2">EVIDENCE GRAPH</text>
+  </g>
+  <text x="42" y="302" fill="#777b75" font-family="ui-monospace,Consolas,monospace" font-size="10" letter-spacing="2">ZENGJIE / BUILDING PRACTICAL AI TOOLS</text>
+  <style>.flow{stroke-dasharray:7 9;animation:flow 6s linear infinite}.rotate{transform-box:fill-box;transform-origin:center;animation:rotate 18s linear infinite}.blink{animation:blink 2.8s steps(1) infinite}.node{animation:node 5s ease-in-out infinite}.n2{animation-delay:.6s}.n3{animation-delay:1.2s}.n4{animation-delay:1.8s}@keyframes flow{to{stroke-dashoffset:-64}}@keyframes rotate{to{transform:rotate(360deg)}}@keyframes blink{0%,80%,100%{opacity:1}81%,88%{opacity:.25}}@keyframes node{0%,100%{opacity:.35}45%{opacity:1}}@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style>
+</svg>
