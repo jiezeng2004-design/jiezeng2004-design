@@ -99,6 +99,7 @@
   </tr>
 </table>
 
+<!-- profile:auto:latest-zh:start -->
 ### `// 最近发布`
 
 <table>
@@ -135,7 +136,9 @@
     </td>
   </tr>
 </table>
+<!-- profile:auto:latest-zh:end -->
 
+<!-- profile:auto:snapshot-zh:start -->
 ### `// GitHub 快照`
 
 <table>
@@ -148,6 +151,8 @@
 </table>
 
 <p align="center"><sub>GitHub 公开数据快照 · 2026-08-17 · Stars 仅统计未归档原创仓库</sub></p>
+<!-- profile:auto:snapshot-zh:end -->
+
 ### `// 贡献轨迹`
 
 <picture>
@@ -259,6 +264,7 @@
   </tr>
 </table>
 
+<!-- profile:auto:latest-en:start -->
 ### `// LATEST_RELEASES` - Recently shipped
 
 <table>
@@ -295,7 +301,9 @@
     </td>
   </tr>
 </table>
+<!-- profile:auto:latest-en:end -->
 
+<!-- profile:auto:snapshot-en:start -->
 ### `// GITHUB_SNAPSHOT` - Public profile data
 
 <table>
@@ -308,6 +316,8 @@
 </table>
 
 <p align="center"><sub>GitHub public-data snapshot · 2026-08-17 · Stars count non-archived original repositories only</sub></p>
+<!-- profile:auto:snapshot-en:end -->
+
 ### `// CONTRIBUTION_SIGNAL` - Building in public
 
 <picture>
