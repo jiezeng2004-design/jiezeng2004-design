@@ -143,14 +143,14 @@
 
 <table>
   <tr>
-    <td align="center"><strong>44</strong><br /><sub>公开仓库</sub></td>
+    <td align="center"><strong>46</strong><br /><sub>公开仓库</sub></td>
     <td align="center"><strong>15</strong><br /><sub>活跃原创仓库</sub></td>
-    <td align="center"><strong>35</strong><br /><sub>原创仓库 Stars</sub></td>
+    <td align="center"><strong>36</strong><br /><sub>原创仓库 Stars</sub></td>
     <td align="center"><strong>4</strong><br /><sub>Followers</sub></td>
   </tr>
 </table>
 
-<p align="center"><sub>GitHub 公开数据快照 · 2026-08-31 · Stars 仅统计未归档原创仓库</sub></p>
+<p align="center"><sub>GitHub 公开数据快照 · 2026-09-07 · Stars 仅统计未归档原创仓库</sub></p>
 <!-- profile:auto:snapshot-zh:end -->
 
 ### `// 贡献轨迹`
@@ -308,14 +308,14 @@
 
 <table>
   <tr>
-    <td align="center"><strong>44</strong><br /><sub>Public repositories</sub></td>
+    <td align="center"><strong>46</strong><br /><sub>Public repositories</sub></td>
     <td align="center"><strong>15</strong><br /><sub>Active original repos</sub></td>
-    <td align="center"><strong>35</strong><br /><sub>Stars on original repos</sub></td>
+    <td align="center"><strong>36</strong><br /><sub>Stars on original repos</sub></td>
     <td align="center"><strong>4</strong><br /><sub>Followers</sub></td>
   </tr>
 </table>
 
-<p align="center"><sub>GitHub public-data snapshot · 2026-08-31 · Stars count non-archived original repositories only</sub></p>
+<p align="center"><sub>GitHub public-data snapshot · 2026-09-07 · Stars count non-archived original repositories only</sub></p>
 <!-- profile:auto:snapshot-en:end -->
 
 ### `// CONTRIBUTION_SIGNAL` - Building in public
