@@ -105,11 +105,11 @@
 <table>
   <tr>
     <td width="50%" valign="top">
-      <code>AGENT BRIDGE / v0.5.1</code>
+      <code>AGENT BRIDGE / v0.6.0</code>
       <p><strong><a href="https://github.com/jiezeng2004-design/dsh-chatgpt-bridge">dsh-chatgpt-bridge &rarr;</a></strong></p>
       <p>让 ChatGPT 创建、继续并控制 DeepSeek Harness Agent 会话的 MCP 桥接器。</p>
       <p><code>JavaScript</code> <code>MCP</code> <code>ChatGPT</code></p>
-      <p><a href="https://github.com/jiezeng2004-design/dsh-chatgpt-bridge">仓库</a> &middot; <a href="https://github.com/jiezeng2004-design/dsh-chatgpt-bridge/releases/tag/v0.5.1">v0.5.1</a></p>
+      <p><a href="https://github.com/jiezeng2004-design/dsh-chatgpt-bridge">仓库</a> &middot; <a href="https://github.com/jiezeng2004-design/dsh-chatgpt-bridge/releases/tag/v0.6.0">v0.6.0</a></p>
     </td>
     <td width="50%" valign="top">
       <code>ALIGNMENT / v0.4.2</code>
@@ -145,12 +145,12 @@
   <tr>
     <td align="center"><strong>47</strong><br /><sub>公开仓库</sub></td>
     <td align="center"><strong>16</strong><br /><sub>活跃原创仓库</sub></td>
-    <td align="center"><strong>37</strong><br /><sub>原创仓库 Stars</sub></td>
-    <td align="center"><strong>6</strong><br /><sub>Followers</sub></td>
+    <td align="center"><strong>41</strong><br /><sub>原创仓库 Stars</sub></td>
+    <td align="center"><strong>7</strong><br /><sub>Followers</sub></td>
   </tr>
 </table>
 
-<p align="center"><sub>GitHub 公开数据快照 · 2026-09-28 · Stars 仅统计未归档原创仓库</sub></p>
+<p align="center"><sub>GitHub 公开数据快照 · 2026-10-05 · Stars 仅统计未归档原创仓库</sub></p>
 <!-- profile:auto:snapshot-zh:end -->
 
 ### `// 贡献轨迹`
@@ -270,11 +270,11 @@
 <table>
   <tr>
     <td width="50%" valign="top">
-      <code>AGENT BRIDGE / v0.5.1</code>
+      <code>AGENT BRIDGE / v0.6.0</code>
       <p><strong><a href="https://github.com/jiezeng2004-design/dsh-chatgpt-bridge">dsh-chatgpt-bridge &rarr;</a></strong></p>
       <p>An MCP bridge for creating, continuing, and controlling DeepSeek Harness agent sessions from ChatGPT.</p>
       <p><code>JavaScript</code> <code>MCP</code> <code>ChatGPT</code></p>
-      <p><a href="https://github.com/jiezeng2004-design/dsh-chatgpt-bridge">Repository</a> &middot; <a href="https://github.com/jiezeng2004-design/dsh-chatgpt-bridge/releases/tag/v0.5.1">v0.5.1</a></p>
+      <p><a href="https://github.com/jiezeng2004-design/dsh-chatgpt-bridge">Repository</a> &middot; <a href="https://github.com/jiezeng2004-design/dsh-chatgpt-bridge/releases/tag/v0.6.0">v0.6.0</a></p>
     </td>
     <td width="50%" valign="top">
       <code>ALIGNMENT / v0.4.2</code>
@@ -310,12 +310,12 @@
   <tr>
     <td align="center"><strong>47</strong><br /><sub>Public repositories</sub></td>
     <td align="center"><strong>16</strong><br /><sub>Active original repos</sub></td>
-    <td align="center"><strong>37</strong><br /><sub>Stars on original repos</sub></td>
-    <td align="center"><strong>6</strong><br /><sub>Followers</sub></td>
+    <td align="center"><strong>41</strong><br /><sub>Stars on original repos</sub></td>
+    <td align="center"><strong>7</strong><br /><sub>Followers</sub></td>
   </tr>
 </table>
 
-<p align="center"><sub>GitHub public-data snapshot · 2026-09-28 · Stars count non-archived original repositories only</sub></p>
+<p align="center"><sub>GitHub public-data snapshot · 2026-10-05 · Stars count non-archived original repositories only</sub></p>
 <!-- profile:auto:snapshot-en:end -->
 
 ### `// CONTRIBUTION_SIGNAL` - Building in public
