@@ -150,7 +150,7 @@
   </tr>
 </table>
 
-<p align="center"><sub>GitHub 公开数据快照 · 2026-10-05 · Stars 仅统计未归档原创仓库</sub></p>
+<p align="center"><sub>GitHub 公开数据快照 · 2026-10-12 · Stars 仅统计未归档原创仓库</sub></p>
 <!-- profile:auto:snapshot-zh:end -->
 
 ### `// 贡献轨迹`
@@ -315,7 +315,7 @@
   </tr>
 </table>
 
-<p align="center"><sub>GitHub public-data snapshot · 2026-10-05 · Stars count non-archived original repositories only</sub></p>
+<p align="center"><sub>GitHub public-data snapshot · 2026-10-12 · Stars count non-archived original repositories only</sub></p>
 <!-- profile:auto:snapshot-en:end -->
 
 ### `// CONTRIBUTION_SIGNAL` - Building in public
