@@ -19,36 +19,36 @@ API_ROOT = "https://api.github.com"
 
 PROJECTS = (
     {
-        "repo": "dsh-chatgpt-bridge",
-        "name": "dsh-chatgpt-bridge",
-        "category": "AGENT BRIDGE",
-        "description_zh": "让 ChatGPT 创建、继续并控制 DeepSeek Harness Agent 会话的 MCP 桥接器。",
-        "description_en": "An MCP bridge for creating, continuing, and controlling DeepSeek Harness agent sessions from ChatGPT.",
-        "tech": ("JavaScript", "MCP", "ChatGPT"),
+        "repo": "relay-forge",
+        "name": "RelayForge",
+        "category": "LOCAL GATEWAY",
+        "description_zh": "本地优先的 AI 编程网关：组合路由、回退、隐私日志，兼容 OpenAI/Anthropic 接口。",
+        "description_en": "Local-first AI coding gateway with combo routing, fallback, privacy logs, and OpenAI/Anthropic compatibility.",
+        "tech": ("JavaScript", "Gateway", "Local-first"),
     },
     {
-        "repo": "dsh-requirements-alignment",
-        "name": "dsh-requirements-alignment",
-        "category": "ALIGNMENT",
-        "description_zh": "在执行前对齐关键需求，让 Agent 少猜测、少返工，同时保持工作流轻量。",
-        "description_en": "Align important requirements before execution so agents guess less and rework less, without a heavyweight spec process.",
-        "tech": ("TypeScript", "Agent", "Requirements"),
+        "repo": "CodexJournal-Lite",
+        "name": "CodexJournal-Lite",
+        "category": "WORK MEMORY",
+        "description_zh": "把本地 Codex 会话归档为可检索的私有工作记忆与仪表盘。",
+        "description_en": "Turn local Codex sessions into a searchable private work memory and dashboard.",
+        "tech": ("JavaScript", "Codex", "Local-first"),
     },
     {
-        "repo": "x-algorithm-auditor",
-        "name": "X Algorithm Auditor",
-        "category": "ANALYTICS",
-        "description_zh": "基于公开 X 算法的本地、可解释 Analytics 审计工具。",
-        "description_en": "Local, explainable X Analytics audits grounded in the public X algorithm.",
-        "tech": ("Python", "Analytics", "Explainable"),
+        "repo": "ProbeMux",
+        "name": "ProbeMux",
+        "category": "MODEL PROBING",
+        "description_zh": "一次探测，处处配置：以证据为先探测模型能力，并生成各编程 Agent 的配置。",
+        "description_en": "Probe once, configure everywhere: evidence-first model capability probing for coding agents.",
+        "tech": ("TypeScript", "CLI", "LLM"),
     },
     {
-        "repo": "DraftPulse",
-        "name": "DraftPulse",
-        "category": "CREATOR TOOL",
-        "description_zh": "面向 X/Twitter 的 AI 回复草稿与互动洞察浏览器扩展。",
-        "description_en": "AI-assisted reply drafting and engagement insights for X/Twitter.",
-        "tech": ("JavaScript", "Browser Extension", "AI"),
+        "repo": "XJTU-Codex-Theme",
+        "name": "XJTU-Codex-Theme",
+        "category": "DESKTOP THEME",
+        "description_zh": "面向 Codex Desktop 的免重启主题，含 XJTU 预设与自定义模板。",
+        "description_en": "No-restart themes for Codex Desktop, with an XJTU preset and a custom template.",
+        "tech": ("JavaScript", "Electron", "Theme"),
     },
 )
 
@@ -114,9 +114,9 @@ def project_cell(project: dict, release: dict, language: str) -> list[str]:
 
 def render_latest(releases: dict[str, dict], language: str) -> str:
     heading = (
-        "### `// 最近发布`"
+        "### `// 更多项目`"
         if language == "zh"
-        else "### `// LATEST_RELEASES` - Recently shipped"
+        else "### `// MORE_PROJECTS` - Also shipped"
     )
     lines = [heading, "", "<table>"]
     for index in range(0, len(PROJECTS), 2):
@@ -128,34 +128,40 @@ def render_latest(releases: dict[str, dict], language: str) -> str:
     return "\n".join(lines)
 
 
-def render_snapshot(profile: dict, repositories: list[dict], language: str) -> str:
+def merged_upstream_prs() -> int:
+    query = urllib.parse.quote(f"author:{OWNER} type:pr is:merged -user:{OWNER}")
+    return int(api_get(f"/search/issues?q={query}&per_page=1")["total_count"])
+
+
+def render_snapshot(repositories: list[dict], merged_prs: int, language: str) -> str:
     originals = [
-        repo for repo in repositories if not repo.get("fork") and not repo.get("archived")
+        repo
+        for repo in repositories
+        if not repo.get("fork") and not repo.get("archived") and repo["name"] != OWNER
     ]
-    public_repos = int(profile["public_repos"])
     original_count = len(originals)
     stars = sum(int(repo.get("stargazers_count", 0)) for repo in originals)
-    followers = int(profile["followers"])
+    forks = sum(int(repo.get("forks_count", 0)) for repo in originals)
     snapshot_date = dt.datetime.now(ZoneInfo("Asia/Shanghai")).date().isoformat()
 
     if language == "zh":
         heading = "### `// GitHub 快照`"
-        labels = ("公开仓库", "活跃原创仓库", "原创仓库 Stars", "Followers")
-        note = f"GitHub 公开数据快照 · {snapshot_date} · Stars 仅统计未归档原创仓库"
+        labels = ("原创项目", "累计 Stars", "累计 Forks", "合并到上游的 PR")
+        note = f"每周自动更新 · {snapshot_date} · 仅统计未归档原创仓库"
     else:
         heading = "### `// GITHUB_SNAPSHOT` - Public profile data"
         labels = (
-            "Public repositories",
-            "Active original repos",
-            "Stars on original repos",
-            "Followers",
+            "Original projects",
+            "Total stars",
+            "Total forks",
+            "PRs merged upstream",
         )
         note = (
-            f"GitHub public-data snapshot · {snapshot_date} · "
-            "Stars count non-archived original repositories only"
+            f"Refreshed weekly · {snapshot_date} · "
+            "non-archived original repositories only"
         )
 
-    values = (public_repos, original_count, stars, followers)
+    values = (original_count, stars, forks, merged_prs)
     lines = [heading, "", "<table>", "  <tr>"]
     for value, label in zip(values, labels, strict=True):
         lines.append(
@@ -183,16 +189,16 @@ def replace_block(text: str, key: str, body: str) -> str:
 
 
 def main() -> None:
-    profile = api_get(f"/users/{urllib.parse.quote(OWNER)}")
     repositories = list_owner_repositories()
     releases = latest_releases()
+    merged_prs = merged_upstream_prs()
 
     original = README_PATH.read_text(encoding="utf-8")
     updated = original
     updated = replace_block(updated, "latest-zh", render_latest(releases, "zh"))
-    updated = replace_block(updated, "snapshot-zh", render_snapshot(profile, repositories, "zh"))
+    updated = replace_block(updated, "snapshot-zh", render_snapshot(repositories, merged_prs, "zh"))
     updated = replace_block(updated, "latest-en", render_latest(releases, "en"))
-    updated = replace_block(updated, "snapshot-en", render_snapshot(profile, repositories, "en"))
+    updated = replace_block(updated, "snapshot-en", render_snapshot(repositories, merged_prs, "en"))
 
     if updated != original:
         README_PATH.write_text(updated, encoding="utf-8", newline="\n")
