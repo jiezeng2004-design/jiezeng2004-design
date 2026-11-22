@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Refresh bounded generated sections in the GitHub profile README."""
+"""Refresh the generated parts of the GitHub profile: Fig. 1 and the numbers around it."""
 
 from __future__ import annotations
 
@@ -8,48 +8,31 @@ import html
 import json
 import os
 import pathlib
+import sys
+import urllib.error
 import urllib.parse
 import urllib.request
 from zoneinfo import ZoneInfo
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import profile_figure  # noqa: E402
+
 OWNER = os.environ.get("GITHUB_REPOSITORY_OWNER", "jiezeng2004-design")
 README_PATH = pathlib.Path(os.environ.get("PROFILE_README_PATH", "README.md"))
+ASSETS_DIR = README_PATH.parent / "assets"
 TOKEN = os.environ.get("GITHUB_TOKEN", "")
 API_ROOT = "https://api.github.com"
 
+# (repo, what it does, shown as "this work" in Fig. 1a)
 PROJECTS = (
-    {
-        "repo": "relay-forge",
-        "name": "RelayForge",
-        "category": "LOCAL GATEWAY",
-        "description_zh": "本地优先的 AI 编程网关：组合路由、回退、隐私日志，兼容 OpenAI/Anthropic 接口。",
-        "description_en": "Local-first AI coding gateway with combo routing, fallback, privacy logs, and OpenAI/Anthropic compatibility.",
-        "tech": ("JavaScript", "Gateway", "Local-first"),
-    },
-    {
-        "repo": "CodexJournal-Lite",
-        "name": "CodexJournal-Lite",
-        "category": "WORK MEMORY",
-        "description_zh": "把本地 Codex 会话归档为可检索的私有工作记忆与仪表盘。",
-        "description_en": "Turn local Codex sessions into a searchable private work memory and dashboard.",
-        "tech": ("JavaScript", "Codex", "Local-first"),
-    },
-    {
-        "repo": "ProbeMux",
-        "name": "ProbeMux",
-        "category": "MODEL PROBING",
-        "description_zh": "一次探测，处处配置：以证据为先探测模型能力，并生成各编程 Agent 的配置。",
-        "description_en": "Probe once, configure everywhere: evidence-first model capability probing for coding agents.",
-        "tech": ("TypeScript", "CLI", "LLM"),
-    },
-    {
-        "repo": "XJTU-Codex-Theme",
-        "name": "XJTU-Codex-Theme",
-        "category": "DESKTOP THEME",
-        "description_zh": "面向 Codex Desktop 的免重启主题，含 XJTU 预设与自定义模板。",
-        "description_en": "No-restart themes for Codex Desktop, with an XJTU preset and a custom template.",
-        "tech": ("JavaScript", "Electron", "Theme"),
-    },
+    ("dsh-chatgpt-bridge", "Steer local agent sessions from ChatGPT.", True),
+    ("dsh-requirements-alignment", "Settle key decisions before any code.", True),
+    ("PatchWarden", "Check every patch before it lands.", True),
+    ("agentref", "Read-only recall of past agent sessions.", True),
+    ("relay-forge", "Local gateway with provider fallback.", False),
+    ("CodexJournal-Lite", "Searchable archive of Codex sessions.", False),
+    ("ProbeMux", "Probe a model once, configure every agent.", False),
+    ("XJTU-Codex-Theme", "No-restart themes for Codex Desktop.", False),
 )
 
 
@@ -80,52 +63,15 @@ def list_owner_repositories() -> list[dict]:
         page += 1
 
 
-def latest_releases() -> dict[str, dict]:
-    result: dict[str, dict] = {}
-    for project in PROJECTS:
-        repo = urllib.parse.quote(project["repo"])
-        release = api_get(f"/repos/{urllib.parse.quote(OWNER)}/{repo}/releases/latest")
-        result[project["repo"]] = {
-            "tag": str(release["tag_name"]),
-            "url": str(release["html_url"]),
-        }
-    return result
-
-
-def project_cell(project: dict, release: dict, language: str) -> list[str]:
-    repo = html.escape(project["repo"])
-    name = html.escape(project["name"])
-    tag = html.escape(release["tag"])
-    release_url = html.escape(release["url"], quote=True)
-    repo_url = f"https://github.com/{html.escape(OWNER)}/{repo}"
-    description = html.escape(project[f"description_{language}"])
-    tech = " ".join(f"<code>{html.escape(item)}</code>" for item in project["tech"])
-    link_label = "仓库" if language == "zh" else "Repository"
-    return [
-        '    <td width="50%" valign="top">',
-        f"      <code>{html.escape(project['category'])} / {tag}</code>",
-        f'      <p><strong><a href="{repo_url}">{name} &rarr;</a></strong></p>',
-        f"      <p>{description}</p>",
-        f"      <p>{tech}</p>",
-        f'      <p><a href="{repo_url}">{link_label}</a> &middot; <a href="{release_url}">{tag}</a></p>',
-        "    </td>",
-    ]
-
-
-def render_latest(releases: dict[str, dict], language: str) -> str:
-    heading = (
-        "### `// 更多项目`"
-        if language == "zh"
-        else "### `// MORE_PROJECTS` - Also shipped"
-    )
-    lines = [heading, "", "<table>"]
-    for index in range(0, len(PROJECTS), 2):
-        lines.append("  <tr>")
-        for project in PROJECTS[index : index + 2]:
-            lines.extend(project_cell(project, releases[project["repo"]], language))
-        lines.append("  </tr>")
-    lines.append("</table>")
-    return "\n".join(lines)
+def list_releases(repo: str) -> list[dict]:
+    path = f"/repos/{urllib.parse.quote(OWNER)}/{urllib.parse.quote(repo)}/releases?per_page=100"
+    try:
+        releases = api_get(path)
+    except urllib.error.HTTPError as error:
+        if error.code == 404:
+            return []
+        raise
+    return [r for r in releases if not r.get("draft") and r.get("published_at")]
 
 
 def merged_upstream_prs() -> int:
@@ -133,49 +79,54 @@ def merged_upstream_prs() -> int:
     return int(api_get(f"/search/issues?q={query}&per_page=1")["total_count"])
 
 
-def render_snapshot(repositories: list[dict], merged_prs: int, language: str) -> str:
-    originals = [
-        repo
-        for repo in repositories
-        if not repo.get("fork") and not repo.get("archived") and repo["name"] != OWNER
-    ]
-    original_count = len(originals)
-    stars = sum(int(repo.get("stargazers_count", 0)) for repo in originals)
-    forks = sum(int(repo.get("forks_count", 0)) for repo in originals)
-    snapshot_date = dt.datetime.now(ZoneInfo("Asia/Shanghai")).date().isoformat()
+def parse_day(stamp: str) -> dt.date:
+    return dt.date.fromisoformat(stamp[:10])
 
-    if language == "zh":
-        heading = "### `// GitHub 快照`"
-        labels = ("原创项目", "累计 Stars", "累计 Forks", "合并到上游的 PR")
-        note = f"每周自动更新 · {snapshot_date} · 仅统计未归档原创仓库"
-    else:
-        heading = "### `// GITHUB_SNAPSHOT` - Public profile data"
-        labels = (
-            "Original projects",
-            "Total stars",
-            "Total forks",
-            "PRs merged upstream",
-        )
-        note = (
-            f"Refreshed weekly · {snapshot_date} · "
-            "non-archived original repositories only"
-        )
 
-    values = (original_count, stars, forks, merged_prs)
-    lines = [heading, "", "<table>", "  <tr>"]
-    for value, label in zip(values, labels, strict=True):
-        lines.append(
-            f'    <td align="center"><strong>{value}</strong><br /><sub>{label}</sub></td>'
-        )
-    lines.extend(
-        [
-            "  </tr>",
-            "</table>",
-            "",
-            f'<p align="center"><sub>{note}</sub></p>',
-        ]
+def render_caption(n_starred: int, n_original: int, n_releases: int, first: dt.date, today: dt.date) -> str:
+    period = f"{first.strftime('%B')}–{today.strftime('%B %Y')}"
+    return (
+        "**Fig. 1 | How the projects fit together.** "
+        "**a**, An agent run from request to merged change. Blue boxes are my projects; grey boxes are "
+        "the tools they connect. A patch that fails PatchWarden's checks goes back to the agent instead of landing. "
+        f"**b**, Stars per repository, for the {n_starred} of my {n_original} original repositories that have any. "
+        f"**c**, Every tagged release of the eight projects in Table 1, {period} ({n_releases} in total)."
     )
+
+
+def render_table(repos: dict, releases: dict) -> str:
+    lines = [
+        "<table>",
+        "  <tr><th>Project</th><th>What it does</th><th>Stars</th><th>Latest release</th></tr>",
+    ]
+    for repo, description, _ in PROJECTS:
+        url = f"https://github.com/{html.escape(OWNER)}/{html.escape(repo)}"
+        stars = int(repos.get(repo, {}).get("stargazers_count", 0))
+        items = releases.get(repo, [])
+        if items:
+            latest = max(items, key=lambda r: r["published_at"])
+            latest_cell = f'<a href="{html.escape(latest["html_url"], quote=True)}">{html.escape(latest["tag_name"])}</a>'
+        else:
+            latest_cell = "&mdash;"
+        lines.extend(
+            [
+                "  <tr>",
+                f'    <td><a href="{url}"><b>{html.escape(repo)}</b></a></td>',
+                f"    <td>{html.escape(description)}</td>",
+                f'    <td align="right">{stars}</td>',
+                f"    <td>{latest_cell}</td>",
+                "  </tr>",
+            ]
+        )
+    lines.append("</table>")
     return "\n".join(lines)
+
+
+def render_upstream_caption(merged_prs: int) -> str:
+    return (
+        f"**Table 2 | Changes merged into other projects.** "
+        f"Selected pull requests; {merged_prs} of mine have been merged into repositories I don't own."
+    )
 
 
 def replace_block(text: str, key: str, body: str) -> str:
@@ -189,22 +140,48 @@ def replace_block(text: str, key: str, body: str) -> str:
 
 
 def main() -> None:
+    today = dt.datetime.now(ZoneInfo("Asia/Shanghai")).date()
     repositories = list_owner_repositories()
-    releases = latest_releases()
-    merged_prs = merged_upstream_prs()
+    by_name = {repo["name"]: repo for repo in repositories}
+    originals = [
+        repo
+        for repo in repositories
+        if not repo.get("fork") and not repo.get("archived") and repo["name"] != OWNER
+    ]
+    featured = {repo for repo, _, mine in PROJECTS if mine}
+    stars = sorted(
+        (
+            (repo["name"], int(repo.get("stargazers_count", 0)), repo["name"] in featured)
+            for repo in originals
+        ),
+        key=lambda row: (-row[1], row[0].lower()),
+    )
+    releases = {repo: list_releases(repo) for repo, _, _ in PROJECTS}
+    release_rows = [
+        (repo, [parse_day(r["published_at"]) for r in releases[repo]], mine)
+        for repo, _, mine in PROJECTS
+    ]
+    all_days = [day for _, days, _ in release_rows for day in days]
+
+    written = profile_figure.write_all(ASSETS_DIR, stars, len(originals), release_rows, today)
+    print(f"Figure written: {', '.join(written)}")
 
     original = README_PATH.read_text(encoding="utf-8")
     updated = original
-    updated = replace_block(updated, "latest-zh", render_latest(releases, "zh"))
-    updated = replace_block(updated, "snapshot-zh", render_snapshot(repositories, merged_prs, "zh"))
-    updated = replace_block(updated, "latest-en", render_latest(releases, "en"))
-    updated = replace_block(updated, "snapshot-en", render_snapshot(repositories, merged_prs, "en"))
-
+    updated = replace_block(
+        updated,
+        "fig1-caption",
+        render_caption(
+            sum(1 for row in stars if row[1] > 0), len(originals), len(all_days), min(all_days), today
+        ),
+    )
+    updated = replace_block(updated, "table1", render_table(by_name, releases))
+    updated = replace_block(updated, "table2-caption", render_upstream_caption(merged_upstream_prs()))
     if updated != original:
         README_PATH.write_text(updated, encoding="utf-8", newline="\n")
-        print("README generated sections refreshed.")
+        print("README refreshed.")
     else:
-        print("README generated sections already current.")
+        print("README already current.")
 
 
 if __name__ == "__main__":
