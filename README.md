@@ -168,7 +168,7 @@
 
 <table>
   <tr>
-    <td align="center"><strong>15</strong><br /><sub>原创项目</sub></td>
+    <td align="center"><strong>14</strong><br /><sub>原创项目</sub></td>
     <td align="center"><strong>50</strong><br /><sub>累计 Stars</sub></td>
     <td align="center"><strong>11</strong><br /><sub>累计 Forks</sub></td>
     <td align="center"><strong>9</strong><br /><sub>合并到上游的 PR</sub></td>
@@ -362,7 +362,7 @@
 
 <table>
   <tr>
-    <td align="center"><strong>15</strong><br /><sub>Original projects</sub></td>
+    <td align="center"><strong>14</strong><br /><sub>Original projects</sub></td>
     <td align="center"><strong>50</strong><br /><sub>Total stars</sub></td>
     <td align="center"><strong>11</strong><br /><sub>Total forks</sub></td>
     <td align="center"><strong>9</strong><br /><sub>PRs merged upstream</sub></td>
